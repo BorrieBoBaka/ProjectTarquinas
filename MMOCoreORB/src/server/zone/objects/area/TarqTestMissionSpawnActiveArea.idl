@@ -8,7 +8,7 @@ import server.zone.objects.scene.SceneObject;
 import server.zone.objects.creature.CreatureObject;
 
 include server.zone.objects.area.ActiveArea;
-import server.zone.objects.mission.DestroyMissionObjective;
+import server.zone.objects.mission.TarqTestMissionObjective;
 
 @json class TarqTestMissionSpawnActiveArea extends ActiveArea {
 	@weakReference protected TarqTestMissionObjective tarqTestMissionObjective;
