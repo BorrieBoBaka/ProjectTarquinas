@@ -35,6 +35,8 @@
 #include "server/zone/objects/player/FactionStatus.h"
 #include "server/zone/managers/visibility/VisibilityManager.h"
 
+#include "server/zone/objects/mission/TarqTestMissionObjective.h"
+
 void MissionManagerImplementation::loadLuaSettings() {
 	try {
 		Lua* lua = new Lua();
@@ -300,6 +302,21 @@ void MissionManagerImplementation::createDestroyMissionObjectives(MissionObject*
 	objective->activate();
 }
 
+void MissionManagerImplementation::createTarqTestMissionObjectives(MissionObject* mission, MissionTerminal* missionTerminal, CreatureObject* player) {
+	ManagedReference<TarqTestMissionObjective*> objective = new TarqTestMissionObjective(mission);
+
+	Locker locker(objective);
+
+	objective->setLairTemplateToSpawn(mission->getTargetOptionalTemplate());
+	objective->setDifficultyLevel(mission->getDifficultyLevel());
+	objective->setDifficulty(mission->getDifficulty());
+
+	ObjectManager::instance()->persistObject(objective, 1, "missionobjectives");
+
+	mission->setMissionObjective(objective);
+	objective->activate();
+}
+
 void MissionManagerImplementation::createDeliverMissionObjectives(MissionObject* mission, MissionTerminal* missionTerminal, CreatureObject* player) {
 	ManagedReference<DeliverMissionObjective*> objective = new DeliverMissionObjective(mission);
 
@@ -429,7 +446,8 @@ void MissionManagerImplementation::createMissionObjectives(MissionObject* missio
 		createSurveyMissionObjectives(mission, missionTerminal, player);
 		break;
 	case MissionTypes::DESTROY:
-		createDestroyMissionObjectives(mission, missionTerminal, player);
+		//createDestroyMissionObjectives(mission, missionTerminal, player);
+		createTarqTestMissionObjectives(mission, missionTerminal, player);
 		break;
 	case MissionTypes::DELIVER:
 		createDeliverMissionObjectives(mission, missionTerminal, player);
@@ -557,12 +575,10 @@ void MissionManagerImplementation::randomizeGeneralTerminalMissions(CreatureObje
 		//Clear mission type before calling mission generators.
 		mission->setTypeCRC(0);
 
-		if (i < 3) {
+		if (i < 6) {
 			randomizeGenericDestroyMission(player, mission, Factions::FACTIONNEUTRAL);
-		} else if (i < 6) {
-			randomizeGenericDeliverMission(player, mission, Factions::FACTIONNEUTRAL);
 		} else if (i < 12) {
-			randomizeGenericSurveyMission(player, mission, Factions::FACTIONNEUTRAL);
+			randomizeGenericDeliverMission(player, mission, Factions::FACTIONNEUTRAL);
 		}
 
 		if (slicer) {
@@ -723,6 +739,37 @@ void MissionManagerImplementation::randomizeFactionTerminalMissions(CreatureObje
 				randomizeGenericEntertainerMission(player, mission, faction, MissionTypes::MUSICIAN);
 				numberOfMusicianMissions++;
 			}
+		}
+
+		if (slicer) {
+			mission->setRewardCredits(mission->getRewardCredits() * 1.5);
+		}
+
+		float cityBonus = 1.f + player->getSkillMod("private_spec_missions") / 100.f;
+		mission->setRewardCredits(mission->getRewardCredits() * cityBonus);
+
+		mission->setRefreshCounter(counter, true);
+	}
+}
+
+void MissionManagerImplementation::randomizeTarquinasTerminalMissions(CreatureObject* player, int counter, bool slicer) {
+	SceneObject* missionBag = player->getSlottedObject("mission_bag");
+	int bagSize = missionBag->getContainerObjectsSize();
+
+	for (int i = 0; i < bagSize; ++i) {
+		Reference<MissionObject*> mission = missionBag->getContainerObject(i).castTo<MissionObject*>();
+
+		Locker locker(mission);
+
+		// Clear mission type before calling mission generators.
+		mission->setTypeCRC(0);
+
+		if (i < 3) {
+			randomizeGenericDestroyMission(player, mission, Factions::FACTIONNEUTRAL);
+		} else if (i < 6) {
+			randomizeGenericDeliverMission(player, mission, Factions::FACTIONNEUTRAL);
+		} else if (i < 12) {
+			randomizeGenericSurveyMission(player, mission, Factions::FACTIONNEUTRAL);
 		}
 
 		if (slicer) {

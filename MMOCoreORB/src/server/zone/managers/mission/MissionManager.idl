@@ -106,6 +106,7 @@ class MissionManager extends Observer implements Logger {
 	private native void randomizeScoutTerminalMissions(CreatureObject player, int counter, boolean slicer);
 	private native void randomizeBountyTerminalMissions(CreatureObject player, int counter);
 	private native void randomizeFactionTerminalMissions(CreatureObject player, int counter, boolean slicer, final unsigned int faction);
+	private native void randomizeTarquinasTerminalMissions(CreatureObject player, int counter, boolean slicer);
 
 	private native void randomizeGenericBountyMission(CreatureObject player, MissionObject mission, final unsigned int faction, Vector<PlayerBounty> potentialTargets);
 	private native void randomizeGenericCraftingMission(CreatureObject player, MissionObject mission, final unsigned int faction);
@@ -115,6 +116,12 @@ class MissionManager extends Observer implements Logger {
 	private native void randomizeGenericHuntingMission(CreatureObject player, MissionObject mission, final unsigned int faction);
 	private native void randomizeGenericReconMission(CreatureObject player, MissionObject mission, final unsigned int faction);
 	private native void randomizeGenericSurveyMission(CreatureObject player, MissionObject mission, final unsigned int faction);
+
+	//private native void randomizeGenericAssassinateMission(CreatureObject player, MissionObject mission, final unsigned int faction);
+	//private native void randomizeGenericFindItemMission(CreatureObject player, MissionObject mission, final unsigned int faction);
+	//private native void randomizeGenericRescueRepairMission(CreatureObject player, MissionObject mission, final unsigned int faction);
+	//private native void randomizeGenericFindPersonMission(CreatureObject player, MissionObject mission, final unsigned int faction);
+	//private native void randomizeGenericRecoverItemMission(CreatureObject player, MissionObject mission, final unsigned int faction);
 
 	private native boolean randomGenericDeliverMission(CreatureObject player, MissionObject mission, boolean inTownMission, final unsigned int faction);
 
@@ -129,6 +136,7 @@ class MissionManager extends Observer implements Logger {
 	private native void createReconMissionObjectives(MissionObject mission, MissionTerminal missionTerminal, CreatureObject player);
 	private native void createBountyMissionObjectives(MissionObject mission, MissionTerminal missionTerminal, CreatureObject player);
 	private native void createCraftingMissionObjectives(MissionObject mission, MissionTerminal missionTerminal, CreatureObject player);
+	private native void createTarqTestMissionObjectives(MissionObject mission, MissionTerminal missionTerminal, CreatureObject player);
 
 	@local
 	@dirty
