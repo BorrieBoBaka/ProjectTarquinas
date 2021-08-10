@@ -272,7 +272,7 @@ void TarqTestMissionObjectiveImplementation::abort() {
 		// spawnActiveArea->destroyObjectFromDatabase(true);
 	}
 
-	ManagedReference<MissionSpawnActiveArea*> spawnActiveArea = this->spawnActiveArea;
+	ManagedReference<TarqTestMissionSpawnActiveArea*> spawnActiveArea = this->spawnActiveArea;
 
 	if (spawnActiveArea != nullptr) {
 		Locker locker(spawnActiveArea);
