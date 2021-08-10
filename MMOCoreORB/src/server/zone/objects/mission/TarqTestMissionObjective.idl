@@ -14,13 +14,13 @@ include engine.util.u3d.Vector3;
 include engine.log.Logger;
 include server.zone.objects.mission.MissionObjective;
 include server.zone.objects.tangible.LairObject;
-include server.zone.objects.area.MissionSpawnActiveArea;
+include server.zone.objects.area.TarqTestMissionSpawnActiveArea;
 
 @json class TarqTestMissionObjective extends MissionObjective {
 	@dereferenced protected string lairTemplate;
 
 protected
-	MissionSpawnActiveArea spawnActiveArea;
+	TarqTestMissionSpawnActiveArea spawnActiveArea;
 
 protected
 	LairObject lairObject;
