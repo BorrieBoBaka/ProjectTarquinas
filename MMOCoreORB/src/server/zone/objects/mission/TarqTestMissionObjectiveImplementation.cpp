@@ -138,7 +138,7 @@ void TarqTestMissionObjectiveImplementation::spawnLair() {
 
 	ManagedReference<MissionObject*> mission = this->mission.get();
 
-	ManagedReference<MissionSpawnActiveArea*> spawnActiveArea = this->spawnActiveArea;
+	ManagedReference<TarqTestMissionSpawnActiveArea*> spawnActiveArea = this->spawnActiveArea;
 
 	if (spawnActiveArea == nullptr || mission == nullptr)
 		return;
