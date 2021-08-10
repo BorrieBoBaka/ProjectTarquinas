@@ -1,0 +1,53 @@
+/*
+				Copyright <SWGEmu>
+		See file COPYING for copying conditions.*/
+
+package server.zone.objects.area;
+
+import server.zone.objects.scene.SceneObject;
+import server.zone.objects.creature.CreatureObject;
+
+include server.zone.objects.area.ActiveArea;
+import server.zone.objects.mission.DestroyMissionObjective;
+
+@json class TarqTestMissionSpawnActiveArea extends ActiveArea {
+	@weakReference protected TarqTestMissionObjective tarqTestMissionObjective;
+
+public
+	TarqTestMissionSpawnActiveArea() {
+		tarqTestMissionObjective = null;
+
+		Logger.setLoggingName("TarqTestMissionSpawnActiveArea");
+	}
+
+	@dirty public void notifyEnter(SceneObject player) {
+		// Logger.info("notifyEnter mission spawn", true);
+
+		if (!player.isPlayerCreature()) {
+			return;
+		} else {
+			TarqTestMissionObjective objective = tarqTestMissionObjective;
+
+			if (objective) {
+				// Logger.info("objective not null", true);
+
+				CreatureObject missionOwner = objective.getPlayerOwner();
+
+				if ((CreatureObject)player == missionOwner) {
+					// Logger.info("player == missionOwner", true);
+					objective.spawnLair();
+				}
+			} else {
+				super.destroyObjectFromWorld(false);
+
+				if (super.isPersistent()) {
+					super.destroyObjectFromDatabase(true);
+				}
+			}
+		}
+	}
+
+	@preLocked public void setMissionObjective(TarqTestMissionObjective mission) {
+		tarqTestMissionObjective = mission;
+	}
+}

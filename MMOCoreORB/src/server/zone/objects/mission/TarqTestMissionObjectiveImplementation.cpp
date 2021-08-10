@@ -6,7 +6,7 @@
  */
 
 #include "server/zone/objects/mission/TarqTestMissionObjective.h"
-#include "server/zone/objects/area/MissionSpawnActiveArea.h"
+#include "server/zone/objects/area/TarqTestMissionSpawnActiveArea.h"
 
 #include "server/zone/objects/waypoint/WaypointObject.h"
 #include "server/zone/Zone.h"
@@ -28,7 +28,7 @@ void TarqTestMissionObjectiveImplementation::setLairTemplateToSpawn(const String
 void TarqTestMissionObjectiveImplementation::destroyObjectFromDatabase() {
 	MissionObjectiveImplementation::destroyObjectFromDatabase();
 
-	ManagedReference<MissionSpawnActiveArea*> spawnActiveArea = this->spawnActiveArea;
+	ManagedReference<TarqTestMissionSpawnActiveArea*> spawnActiveArea = this->spawnActiveArea;
 
 	if (spawnActiveArea != nullptr) {
 		Locker locker(spawnActiveArea);
@@ -49,7 +49,7 @@ void TarqTestMissionObjectiveImplementation::activate() {
 	}
 
 	if (spawnActiveArea == nullptr) {
-		spawnActiveArea = (Core::lookupObject<ZoneServer>("ZoneServer")->createObject(STRING_HASHCODE("object/mission_spawn_area.iff"), 1)).castTo<MissionSpawnActiveArea*>();
+		spawnActiveArea = (Core::lookupObject<ZoneServer>("ZoneServer")->createObject(STRING_HASHCODE("object/mission_spawn_area.iff"), 1)).castTo<TarqTestMissionSpawnActiveArea*>();
 		Locker alocker(spawnActiveArea);
 		spawnActiveArea->setMissionObjective(_this.getReferenceUnsafeStaticCast());
 	}
